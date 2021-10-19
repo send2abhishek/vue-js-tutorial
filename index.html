@@ -25,7 +25,8 @@
   </head>
   <body>
     <div id="container" v-cloak>
-      {{greeting}} <input v-model="greeting" />
+      {{greeting}}
+      <input v-model="greeting" @keyup.enter="greet(`hi this is abhishek`)" />
 
       <div v-if="isVisible" class="box"></div>
       <div v-else-if="isVisible2" class="box two"></div>
@@ -33,6 +34,7 @@
       <br />
       <button @click="isVisible2 = !isVisible2">toggle box</button>
       <button @click="toggleBox">Click Me</button>
+      <login-form />
     </div>
 
     <script src="https://unpkg.com/vue@next"></script>
@@ -48,6 +50,33 @@
         methods: {
           toggleBox() {
             this.isVisible = !this.isVisible;
+          },
+          greet(message) {
+            console.log("this is the greet method ", this.greeting, message);
+          },
+        },
+      });
+
+      app.component("login-form", {
+        template: `
+            <form @submit.prevent="handleSubmit">
+                <h1>{{title}}</h1> 
+                <input type="email" v-model="email" />
+                <input type="password" v-model="password" />
+                <button>Login</button>
+            </form>
+
+          `,
+        data: function () {
+          return {
+            title: "Login Form",
+            email: "",
+            password: "",
+          };
+        },
+        methods: {
+          handleSubmit() {
+            console.log("submitted", this.email, this.password);
           },
         },
       });
